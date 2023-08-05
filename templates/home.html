@@ -10,9 +10,21 @@
   </head>
   <body>
     <h1>Welcome to Car Cost Calculator</h1>
-    <p>Number of Cars: {{ car_count }}</p>
-    <a href="{{ url_for('add_car') }}">Add Car</a>
-    <a href="{{ url_for('view_cars') }}">View Cars</a>
-    <a href="{{ url_for('compare_cars') }}">Compare Cars</a>
+    <hr />
+    <p><b>Number of Cars: {{ car_count }}</b></p>
+    <hr />
+    <button type="button" id="add">
+      <a href="{{ url_for('add_car') }}">Add Car</a>
+    </button>
+
+    <span style="padding: 10px"></span>
+    <button type="button" id="view">
+      <a href="{{ url_for('view_cars') }}">View Cars</a>
+    </button>
+
+    <span style="padding: 10px"></span>
+    <button type="button" id="compare">
+      <a href="{{ url_for('compare_cars') }}">Compare Cars</a>
+    </button>
   </body>
 </html>

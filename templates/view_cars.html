@@ -10,6 +10,20 @@
   </head>
   <body>
     <h1>View Cars</h1>
+    <button type="button" id="add">
+      <a href="{{ url_for('add_car') }}">Add Car</a>
+    </button>
+
+    <span style="padding: 10px"></span>
+    <button type="button" id="view">
+      <a href="{{ url_for('view_cars') }}">View Cars</a>
+    </button>
+
+    <span style="padding: 10px"></span>
+    <button type="button" id="compare">
+      <a href="{{ url_for('compare_cars') }}">Compare Cars</a>
+    </button>
+    <hr />
     <table>
       <tr>
         <th>Name</th>

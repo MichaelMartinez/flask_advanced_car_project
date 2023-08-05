@@ -13,6 +13,7 @@ import sqlite3
 class Car:
     def __init__(
         self,
+        id: int,
         name: str,
         purchase_price: float,
         maintenance_cost_per_mile: float,
@@ -22,6 +23,7 @@ class Car:
         electricity_cost_per_kwh: float,
         electric_efficiency: float,
     ):
+        self.id = id
         self.name = name
         self.purchase_price = purchase_price
         self.maintenance_cost_per_mile = maintenance_cost_per_mile
@@ -148,6 +150,7 @@ def get_cars() -> List[Car]:
     # Iterate over each car record and create a car object
     for record in car_records:
         car = Car(
+            record[0],
             record[1],
             record[2],
             record[3],
@@ -320,6 +323,7 @@ def modify_car(car_id):
 
         # Create a car object with the record
         car = Car(
+            car_record[0],
             car_record[1],
             car_record[2],
             car_record[3],
@@ -334,7 +338,7 @@ def modify_car(car_id):
         cursor.close()
         connection.close()
 
-        return render_template("modify_car.html", car=car)
+        return render_template("modify_car.html", car=car, car_record=car_record)
 
 if __name__ == "__main__":
     app.run(debug=True)
