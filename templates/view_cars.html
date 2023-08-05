@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>View Cars</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <h1>View Cars</h1>
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Purchase Price</th>
+        <th>Maintenance (per mile)</th>
+        <th>Miles Driven Daily</th>
+        <th>Fuel (per Gal.)</th>
+        <th>Miles per Gallon</th>
+        <th>Electricity (per kwh)</th>
+        <th>Kilowatt-hours per Mile</th>
+      </tr>
+      {% for car in cars %}
+      <tr>
+        <td>{{ car.name }}</td>
+        <td>{{ car.purchase_price }}</td>
+        <td>{{ car.maintenance_cost_per_mile }}</td>
+        <td>{{ car.miles_driven_daily }}</td>
+        <td>{{ car.fuel_cost_per_gallon }}</td>
+        <td>{{ car.gas_efficiency }}</td>
+        <td>{{ car.electricity_cost_per_kwh }}</td>
+        <td>{{ car.electric_efficiency }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </body>
+</html>

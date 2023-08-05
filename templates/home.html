@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Car Cost Calculator</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <h1>Welcome to Car Cost Calculator</h1>
+    <p>Number of Cars: {{ car_count }}</p>
+    <a href="{{ url_for('add_car') }}">Add Car</a>
+    <a href="{{ url_for('view_cars') }}">View Cars</a>
+    <a href="{{ url_for('compare_cars') }}">Compare Cars</a>
+  </body>
+</html>

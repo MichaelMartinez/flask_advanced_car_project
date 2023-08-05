@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Compare Cars</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <h1>Compare Cars</h1>
+    <form method="POST" action="{{ url_for('compare_cars') }}">
+      <label for="car1">Car 1:</label>
+      <select id="car1" name="car1">
+        {% for car in cars %}
+        <option value="{{ loop.index0 }}">{{ car.name }}</option>
+        {% endfor %}</select
+      ><br /><br />
+      <label for="car2">Car 2:</label>
+      <select id="car2" name="car2">
+        {% for car in cars %}
+        <option value="{{ loop.index0 }}">{{ car.name }}</option>
+        {% endfor %}</select
+      ><br /><br />
+      <input type="submit" value="Compare" />
+    </form>
+    {% if car1 and car2 %}
+    <h2>Comparison Results:</h2>
+    <p>
+      Daily Cost of Operation for {{ car1.name }}: ${{ car1_total_cost|round(2)
+      }}
+    </p>
+    <p>
+      Daily Cost of Operation for {{ car2.name }}: ${{ car2_total_cost|round(2)
+      }}
+    </p>
+    <h3>How long would it take to "pay off" having two cars?</h3>
+    <p>
+      {{ car1.name }} daily costs subtracted from {{car2.name}} daily costs = {{
+      car2_daily_cost - car1_daily_cost|round(2) }}
+    </p>
+    <p>
+      {{ (car2_daily_cost - car1_daily_cost)|round(2) }} divided into the
+      purchase price of {{car1.name}} = {{(car1.purchase_price /
+      (car2_daily_cost - car1_daily_cost))|round(2)}}
+    </p>
+    <p>
+      It would take {{car1.name}}: {{((car1.purchase_price / (car2_daily_cost -
+      car1_daily_cost)) / 365)|round(2)}} years to pay for itself. Based on the
+      difference between the operation cost differential.
+    </p>
+    <h2>Average Costs</h2>
+    <p>Average daily costs for {{car1.name}}: ${{car1_daily_cost|round(2)}}</p>
+    <p>Average daily costs for {{car2.name}}: ${{car2_daily_cost|round(2)}}</p>
+    <p>
+      Average monthly costs for {{car1.name}}: ${{car1_monthly_cost|round(2)}}
+    </p>
+    <p>
+      Average monthly costs for {{car2.name}}: ${{car2_monthly_cost|round(2)}}
+    </p>
+    <h2>Average Depreciation</h2>
+    <p>
+      Average daily depreciation for {{car1.name}}: ${{car1_daily_dep|round(2)}}
+    </p>
+    <p>
+      Average daily depreciation for {{car2.name}}: ${{car2_daily_dep|round(2)}}
+    </p>
+    <p>
+      Average monthly depreciation for {{car1.name}}:
+      ${{car1_monthly_dep|round(2)}}
+    </p>
+    <p>
+      Average monthly depreciation for {{car2.name}}:
+      ${{car2_monthly_dep|round(2)}}
+    </p>
+    {% endif %}
+  </body>
+</html>
