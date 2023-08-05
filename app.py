@@ -256,5 +256,85 @@ def compare_cars():
         return render_template("compare_cars.html", cars=cars)
 
 
+@app.route("/modify_car/<int:car_id>", methods=["GET", "POST"])
+def modify_car(car_id):
+    # Create a connection to the database
+    connection = sqlite3.connect("car_database.db")
+
+    # Create a cursor object to execute SQL queries
+    cursor = connection.cursor()
+
+    if request.method == "POST":
+        # Get form data
+        name = request.form["name"]
+        purchase_price = float(request.form["purchase_price"])
+        maintenance_cost_per_mile = float(request.form["maintenance_cost_per_mile"])
+        miles_driven_daily = float(request.form["miles_driven_daily"])
+        fuel_cost_per_gallon = float(request.form["fuel_cost_per_gallon"])
+        gas_efficiency = float(request.form["gas_efficiency"])
+        electricity_cost_per_kwh = float(request.form["electricity_cost_per_kwh"])
+        electric_efficiency = float(request.form["electric_efficiency"])
+
+        # Define the SQL query to update the car object in the table
+        update_query = """
+            UPDATE cars SET name = ?, purchase_price = ?, maintenance_cost_per_mile = ?, miles_driven_daily = ?,
+                            fuel_cost_per_gallon = ?, gas_efficiency = ?, electricity_cost_per_kwh = ?, electric_efficiency = ?
+            WHERE id = ?
+        """
+
+        # Execute the update query with the new car attributes
+        cursor.execute(
+            update_query,
+            (
+                name,
+                purchase_price,
+                maintenance_cost_per_mile,
+                miles_driven_daily,
+                fuel_cost_per_gallon,
+                gas_efficiency,
+                electricity_cost_per_kwh,
+                electric_efficiency,
+                car_id,
+            ),
+        )
+
+        # Commit the changes to the database
+        connection.commit()
+
+        # Close the cursor and the database connection
+        cursor.close()
+        connection.close()
+
+        return redirect(url_for("view_cars"))
+    else:
+        # Define the SQL query to retrieve the car from the table
+        select_query = """
+            SELECT * FROM cars WHERE id = ?
+        """
+
+        # Execute the select query with the car id
+        cursor.execute(select_query, (car_id,))
+
+        # Fetch the car record from the result
+        car_record = cursor.fetchone()
+
+        # Create a car object with the record
+        car = Car(
+            car_record[1],
+            car_record[2],
+            car_record[3],
+            car_record[4],
+            car_record[5],
+            car_record[6],
+            car_record[7],
+            car_record[8],
+        )
+
+        # Close the cursor and the database connection
+        cursor.close()
+        connection.close()
+
+        return render_template("modify_car.html", car=car)
+
 if __name__ == "__main__":
     app.run(debug=True)
