@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Modify Car</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <h1>Modify Car</h1>
+    <form method="POST">
+      <label for="name">Name:</label><br>
+      <input type="text" id="name" name="name" value="{{ car.name }}" required><br>
+      <label for="purchase_price">Purchase Price:</label><br>
+      <input type="number" id="purchase_price" name="purchase_price" value="{{ car.purchase_price }}" required><br>
+      <label for="maintenance_cost_per_mile">Maintenance Cost per Mile:</label><br>
+      <input type="number" id="maintenance_cost_per_mile" name="maintenance_cost_per_mile" value="{{ car.maintenance_cost_per_mile }}" required><br>
+      <label for="miles_driven_daily">Miles Driven Daily:</label><br>
+      <input type="number" id="miles_driven_daily" name="miles_driven_daily" value="{{ car.miles_driven_daily }}" required><br>
+      <label for="fuel_cost_per_gallon">Fuel Cost per Gallon:</label><br>
+      <input type="number" id="fuel_cost_per_gallon" name="fuel_cost_per_gallon" value="{{ car.fuel_cost_per_gallon }}" required><br>
+      <label for="gas_efficiency">Gas Efficiency:</label><br>
+      <input type="number" id="gas_efficiency" name="gas_efficiency" value="{{ car.gas_efficiency }}" required><br>
+      <label for="electricity_cost_per_kwh">Electricity Cost per kWh:</label><br>
+      <input type="number" id="electricity_cost_per_kwh" name="electricity_cost_per_kwh" value="{{ car.electricity_cost_per_kwh }}" required><br>
+      <label for="electric_efficiency">Electric Efficiency:</label><br>
+      <input type="number" id="electric_efficiency" name="electric_efficiency" value="{{ car.electric_efficiency }}" required><br>
+      <input type="submit" value="Submit">
+    </form>
+  </body>
+</html>

@@ -31,6 +31,7 @@
         <td>{{ car.gas_efficiency }}</td>
         <td>{{ car.electricity_cost_per_kwh }}</td>
         <td>{{ car.electric_efficiency }}</td>
+        <td><a href="{{ url_for('modify_car', car_id=car.id) }}">Modify</a></td>
       </tr>
       {% endfor %}
     </table>
