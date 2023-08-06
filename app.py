@@ -340,5 +340,30 @@ def modify_car(car_id):
 
         return render_template("modify_car.html", car=car, car_record=car_record)
 
+@app.route("/delete_car/<int:car_id>")
+def delete_car(car_id):
+    # Create a connection to the database
+    connection = sqlite3.connect("car_database.db")
+
+    # Create a cursor object to execute SQL queries
+    cursor = connection.cursor()
+
+    # Define the SQL query to delete the car from the table
+    delete_query = """
+        DELETE FROM cars WHERE id = ?
+    """
+
+    # Execute the delete query with the car id
+    cursor.execute(delete_query, (car_id,))
+
+    # Commit the changes to the database
+    connection.commit()
+
+    # Close the cursor and the database connection
+    cursor.close()
+    connection.close()
+
+    return redirect(url_for("view_cars"))
+
 if __name__ == "__main__":
     app.run(debug=True)
