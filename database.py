@@ -1,10 +1,10 @@
-
 import sqlite3
 from typing import List
 
 from models import Car
 
 DATABASE_NAME = "car_database.db"
+
 
 def create_connection():
     return sqlite3.connect(DATABASE_NAME)
@@ -38,7 +38,7 @@ def save_car(car: Car):
 
 def get_cars() -> List[Car]:
     # Create a connection to the database
-    connection = database.create_connection()
+    connection = create_connection()
 
     # Create a cursor object to execute SQL queries
     cursor = connection.cursor()
