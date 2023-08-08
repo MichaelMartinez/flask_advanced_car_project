@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 from models import Car
 import database
 from typing import List
@@ -219,10 +219,16 @@ def view_json():
         selected_object = request.form["selected_object"]
         data = get_json_data()
         selected_data = data[selected_object]
-        return render_template("view_json.html", data=selected_data)
-    else:
-        data = get_json_data()
-        return render_template("view_json.html", data=data)
+        if 'selected_objects' not in session:
+            session['selected_objects'] = []
+        session['selected_objects'].append(selected_data)
+    data = session.get('selected_objects', [])
+    return render_template("view_json.html", data=data)
+
+@app.route("/clear_json")
+def clear_json():
+    session.pop('selected_objects', None)
+    return redirect(url_for("view_json"))
 
 if __name__ == "__main__":
     app.run(debug=True)
