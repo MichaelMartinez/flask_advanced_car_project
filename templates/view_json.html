@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>View JSON Data</title>
+</head>
+<body>
+    <h1>View JSON Data</h1>
+    <form method="POST">
+        <label for="selected_object">Select JSON Object:</label>
+        <select name="selected_object" id="selected_object">
+            {% for key in data.keys() %}
+                <option value="{{ key }}">{{ key }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="View">
+    </form>
+    <table>
+        <thead>
+            <tr>
+                {% for key in data.keys() %}
+                    <th>{{ key }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {% for value in data.values() %}
+                    <td>{{ value }}</td>
+                {% endfor %}
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
