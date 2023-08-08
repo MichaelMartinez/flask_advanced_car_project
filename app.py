@@ -4,9 +4,11 @@ import database
 from typing import List
 from dataclasses import dataclass
 from database import save_car, get_cars
+import json
 
 
 app = Flask(__name__)
+app.jinja_env.globals['enumerate'] = enumerate
 
 
 def clear_storage():
@@ -205,9 +207,6 @@ def delete_car(car_id):
 
     return redirect(url_for("view_cars"))
 
-
-import json
-
 def get_json_data():
     with open('ev_spread_2023.json') as f:
         data = json.load(f)
@@ -216,19 +215,22 @@ def get_json_data():
 @app.route("/view_json", methods=["GET", "POST"])
 def view_json():
     if request.method == "POST":
-        selected_object = request.form["selected_object"]
+        selected_object_index = int(request.form["selected_object"])
         data = get_json_data()
-        selected_data = data[selected_object]
+        selected_data = data[selected_object_index]
         if 'selected_objects' not in session:
             session['selected_objects'] = []
         session['selected_objects'].append(selected_data)
-    data = session.get('selected_objects', [])
-    return render_template("view_json.html", data=data)
+    all_data = get_json_data()
+    selected_data = session.get('selected_objects', [])
+    return render_template("view_json.html", data=all_data, selected_data=selected_data)
 
-@app.route("/clear_json")
+@app.route("/clear_json", methods=["GET", "POST"])
 def clear_json():
     session.pop('selected_objects', None)
     return redirect(url_for("view_json"))
 
 if __name__ == "__main__":
+    app.secret_key =  "sample_secret_key_12345"
     app.run(debug=True)
+    

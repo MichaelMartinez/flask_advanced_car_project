@@ -1,37 +1,60 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>View JSON Data</title>
-</head>
-<body>
-    <h1>View JSON Data</h1>
+  <head>
+    <title>View Cars</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <h1>View Car Spec Data</h1>
+    <button type="button" id="add">
+      <a href="{{ url_for('add_car') }}">Add Car</a>
+    </button>
+
+    <span style="padding: 10px"></span>
+    <button type="button" id="view">
+      <a href="{{ url_for('view_cars') }}">View Cars</a>
+    </button>
+
+    <span style="padding: 10px"></span>
+    <button type="button" id="compare">
+      <a href="{{ url_for('compare_cars') }}">Compare Cars</a>
+    </button>
+    <hr />
     <form method="POST">
-        <label for="selected_object">Select JSON Object:</label>
-        <select name="selected_object" id="selected_object">
-            {% for key in data.keys() %}
-                <option value="{{ key }}">{{ key }}</option>
-            {% endfor %}
-        </select>
-        <input type="submit" value="View">
+      <label for="selected_object">Select JSON Object:</label>
+      <select name="selected_object" id="selected_object">
+        {% for index, car in enumerate(data) %}
+        <option value="{{ index }}">
+          {{ car["make"] }} {{ car["model"] }}
+        </option>
+        {% endfor %}
+      </select>
+      <input type="submit" value="View" />
     </form>
     <table>
-        <thead>
-            <tr>
-                {% for key in data[0].keys() %}
-                    <th>{{ key }}</th>
-                {% endfor %}
-            </tr>
-        </thead>
-        <tbody>
-            {% for object in data %}
-                <tr>
-                    {% for value in object.values() %}
-                        <td>{{ value }}</td>
-                    {% endfor %}
-                </tr>
-            {% endfor %}
-        </tbody>
+      <thead>
+        <tr>
+          {% if data %} {% for key in data[0].keys() %}
+          <th>{{ key }}</th>
+          {% endfor %} {% endif %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for object in selected_data %}
+        <tr>
+          {% for value in object.values() %}
+          <td>{{ value }}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
     </table>
-    <a href="{{ url_for('clear_json') }}">Clear</a>
-</body>
+    <form action="{{ url_for('clear_json') }}" method="POST">
+      <input type="submit" value="Clear Table" />
+    </form>
+  </body>
 </html>
