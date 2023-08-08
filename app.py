@@ -206,5 +206,23 @@ def delete_car(car_id):
     return redirect(url_for("view_cars"))
 
 
+import json
+
+def get_json_data():
+    with open('ev_spread_2023.json') as f:
+        data = json.load(f)
+    return data
+
+@app.route("/view_json", methods=["GET", "POST"])
+def view_json():
+    if request.method == "POST":
+        selected_object = request.form["selected_object"]
+        data = get_json_data()
+        selected_data = data[selected_object]
+        return render_template("view_json.html", data=selected_data)
+    else:
+        data = get_json_data()
+        return render_template("view_json.html", data=data)
+
 if __name__ == "__main__":
     app.run(debug=True)
