@@ -7,6 +7,15 @@
       href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css"
       crossorigin="anonymous"
     />
+    <script>
+      function searchCarSpecs() {
+        var carName = document.getElementById("carName").value;
+        var searchQuery =
+          "https://www.google.com/search?q=" +
+          encodeURIComponent(carName + " car specs");
+        window.open(searchQuery, "_blank");
+      }
+    </script>
   </head>
   <body>
     <h1>Add Car</h1>
@@ -23,6 +32,12 @@
     <button type="button" id="compare">
       <a href="{{ url_for('compare_cars') }}">Compare Cars</a>
     </button>
+    <hr />
+    <form>
+      <label for="carName">Car Name:</label><br />
+      <input type="text" id="carName" name="carName" /><br />
+      <input type="button" value="Research" onclick="searchCarSpecs()" />
+    </form>
     <hr />
     <form method="POST" action="{{ url_for('add_car') }}">
       <label for="name">Name:</label>
