@@ -8,7 +8,7 @@ import json
 
 
 app = Flask(__name__)
-app.jinja_env.globals['enumerate'] = enumerate
+app.jinja_env.globals["enumerate"] = enumerate
 
 
 def clear_storage():
@@ -207,10 +207,12 @@ def delete_car(car_id):
 
     return redirect(url_for("view_cars"))
 
+
 def get_json_data():
-    with open('ev_spread_2023.json') as f:
+    with open("ev_spread_2023.json") as f:
         data = json.load(f)
     return data
+
 
 @app.route("/view_json", methods=["GET", "POST"])
 def view_json():
@@ -218,19 +220,38 @@ def view_json():
         selected_object_index = int(request.form["selected_object"])
         data = get_json_data()
         selected_data = data[selected_object_index]
-        if 'selected_objects' not in session:
-            session['selected_objects'] = []
-        session['selected_objects'].append(selected_data)
+        if "selected_objects" not in session:
+            session["selected_objects"] = []
+        session["selected_objects"].append(selected_data)
     all_data = get_json_data()
-    selected_data = session.get('selected_objects', [])
+    selected_data = session.get("selected_objects", [])
     return render_template("view_json.html", data=all_data, selected_data=selected_data)
+
 
 @app.route("/clear_json", methods=["GET", "POST"])
 def clear_json():
-    session.pop('selected_objects', None)
+    session.pop("selected_objects", None)
     return redirect(url_for("view_json"))
 
+
+@app.route("/solar_calculator", methods=["GET", "POST"])
+def solar_calculator():
+    result = None
+    if request.method == "POST":
+        # Get form data
+        battery_size = float(request.form["battery_size"])
+        miles_per_kwh = float(request.form["miles_per_kwh"])
+        solar_production = float(request.form["solar_production"])
+        desired_range = float(request.form["desired_range"])
+
+        # Perform calculation
+        required_energy = desired_range / miles_per_kwh
+        required_panels = required_energy / solar_production
+        result = f"You will need approximately {required_panels:.2f} solar panels to achieve a range of {desired_range} miles per hour."
+
+    return render_template("solar_calculator.html", result=result)
+
+
 if __name__ == "__main__":
-    app.secret_key =  "sample_secret_key_12345"
+    app.secret_key = "sample_secret_key_12345"
     app.run(debug=True)
-    

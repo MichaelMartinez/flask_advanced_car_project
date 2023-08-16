@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Car Cost Calculator</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <h1>Solar Energy System Calculator</h1>
+    <hr />
+    <hr />
+    <button type="button" id="add">
+      <a href="{{ url_for('add_car') }}">Add Car</a>
+    </button>
+
+    <span style="padding: 10px"></span>
+    <button type="button" id="view">
+      <a href="{{ url_for('view_cars') }}">View Cars</a>
+    </button>
+
+    <span style="padding: 10px"></span>
+    <button type="button" id="compare">
+      <a href="{{ url_for('compare_cars') }}">Compare Cars</a>
+    </button>
+    <button type="button" id="vjson">
+      <a href="{{ url_for('view_json') }}">Electric Car Specs</a>
+    </button>
+  
+    <span style="padding: 10px"></span>
+    <button type="button" id="solar_calculator">
+      <a href="{{ url_for('solar_calculator') }}">Solar Calculator</a>
+    </button>
+    
+    <form action="/solar_calculator" method="post">
+        <label for="battery_size">Battery size (kWh):</label>
+        <input type="number" id="battery_size" name="battery_size" min="50" max="81" value="65.5" step="0.1"><br><br>
+        
+        <label for="miles_per_kwh">Miles per kWh:</label>
+        <input type="number" id="miles_per_kwh" name="miles_per_kwh" min="2.5" max="6.5" value="4.5" step="0.1"><br><br>
+        
+        <label for="solar_production">Solar panel production (kWh per hour):</label>
+        <input type="number" id="solar_production" name="solar_production" min="0.17" max="0.35" value="0.26" step="0.01"><br><br>
+        
+        <label for="desired_range">Desired range per hour (miles):</label>
+        <input type="number" id="desired_range" name="desired_range" min="1" value="20" step="1"><br><br>
+        
+        <input type="submit" value="Calculate">
+    </form>
+    
+    {% if result %}
+    <h2>Results:</h2>
+    <p>{{ result }}</p>
+    {% endif %}
+</div>
+</body>
+</html>
