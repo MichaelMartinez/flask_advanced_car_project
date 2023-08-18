@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Buy vs Lease Comparison</title>
+    <link
+      crossorigin="anonymous"
+      href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <h1>Buy vs Lease Comparison</h1>
+    <select onchange="window.location.href=this.value;">
+      <option value="{{ url_for('add_car') }}">Add Car</option>
+      <option value="{{ url_for('buy_vs_lease') }}">Buy vs Lease</option>
+      <option value="{{ url_for('compare_cars') }}">Compare Cars</option>
+      <option value="{{ url_for('home') }}">Home</option>
+      <option value="{{ url_for('solar_calculator') }}">
+        Solar Calculator
+      </option>
+      <option value="{{ url_for('view_cars') }}">View Cars</option>
+      <option value="{{ url_for('view_json') }}">Electric Car Specs</option>
+    </select>
+    <hr />
+    <form action="{{ url_for('buy_vs_lease') }}" method="POST">
+      <h2>Leasing Inputs</h2>
+      <label for="car_price">Car Price for Leasing:</label>
+      <input
+        name="car_price"
+        required=""
+        step="0.01"
+        type="number"
+      /><br /><br />
+      <label for="estimated_value">Estimated Value:</label>
+      <input
+        name="estimated_value"
+        required=""
+        step="0.01"
+        type="number"
+      /><br /><br />
+      <label for="lease_term">Lease Term (in months):</label>
+      <input name="lease_term" required="" type="number" /><br /><br />
+      <label for="interest_rate">Interest Rate (as a decimal):</label>
+      <input
+        name="interest_rate"
+        required=""
+        step="0.01"
+        type="number"
+      /><br /><br />
+      <label for="mileage_cap">Mileage Cap:</label>
+      <input name="mileage_cap" required="" type="number" /><br /><br />
+      <label for="expected_depreciation">Expected Depreciation:</label>
+      <input
+        name="expected_depreciation"
+        required=""
+        step="0.01"
+        type="number"
+      /><br /><br />
+      <label for="equity_of_trade_in">Equity of Trade In:</label>
+      <input
+        name="equity_of_trade_in"
+        required=""
+        step="0.01"
+        type="number"
+      /><br /><br />
+      <label for="down_payment_leasing">Down Payment for Leasing:</label>
+      <input
+        name="down_payment_leasing"
+        required=""
+        step="0.01"
+        type="number"
+      /><br /><br />
+      <label for="fees">Fees:</label>
+      <label for="monthly_payment">Monthly Payment:</label>
+      <input
+        name="monthly_payment"
+        required=""
+        step="0.01"
+        type="number"
+      /><br /><br />
+      <label for="depreciation_method_leasing">Depreciation Method:</label>
+      <select name="depreciation_method_leasing" required="">
+        <option value="rule_of_thumb">Rule of Thumb</option>
+        <option value="other_method">Other Method</option></select
+      ><br /><br />
+      <input name="fees" required="" step="0.01" type="number" /><br /><br />
+      <h2>Buying Inputs</h2>
+      <label for="interest_rate_buying"
+        >Interest Rate for Buying (as a decimal):</label
+      >
+      <input
+        name="interest_rate_buying"
+        required=""
+        step="0.01"
+        type="number"
+      /><br /><br />
+      <label for="loan_term">Loan Term (in months):</label>
+      <input name="loan_term" required="" type="number" /><br /><br />
+      <label for="car_price_buying">Car Price for Buying:</label>
+      <input
+        name="car_price_buying"
+        required=""
+        step="0.01"
+        type="number"
+      /><br /><br />
+      <label for="credit_score">Credit Score:</label>
+      <input name="credit_score" required="" type="number" /><br /><br />
+      <label for="sales_tax_rate">Sales Tax Rate (as a decimal):</label>
+      <input
+        name="sales_tax_rate"
+        required=""
+        step="0.01"
+        type="number"
+      /><br /><br />
+      <label for="apr">APR:</label>
+      <input name="apr" required="" step="0.01" type="number" /><br /><br />
+      <label for="down_payment_buying">Down Payment for Buying:</label>
+      <label for="monthly_mileage_driven">Monthly Mileage Driven:</label>
+      <input
+        name="monthly_mileage_driven"
+        required=""
+        type="number"
+      /><br /><br />
+      <label for="depreciation_method_buying">Depreciation Method:</label>
+      <select name="depreciation_method_buying" required="">
+        <option value="rule_of_thumb">Rule of Thumb</option>
+        <option value="other_method">Other Method</option></select
+      ><br /><br />
+      <input
+        name="down_payment_buying"
+        required=""
+        step="0.01"
+        type="number"
+      /><br /><br />
+      <input type="submit" value="Compare" />
+      <h2>Results</h2>
+      <h3>Leasing Results:</h3>
+      <p>{{ leasing_results }}</p>
+      <h3>Buying Results:</h3>
+      <p>{{ buying_results }}</p>
+    </form>
+  </body>
+</html>

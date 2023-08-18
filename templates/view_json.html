@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+
 <html>
   <head>
     <title>View Cars</title>
     <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css"
       crossorigin="anonymous"
+      href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css"
+      rel="stylesheet"
     />
     <style>
       body {
@@ -15,23 +16,22 @@
   </head>
   <body>
     <h1>View Car Spec Data</h1>
-    <button type="button" id="add">
-      <a href="{{ url_for('add_car') }}">Add Car</a>
-    </button>
+    <select onchange="window.location.href=this.value;">
+      <option value="{{ url_for('add_car') }}">Add Car</option>
+      <option value="{{ url_for('buy_vs_lease') }}">Buy vs Lease</option>
+      <option value="{{ url_for('compare_cars') }}">Compare Cars</option>
+      <option value="{{ url_for('home') }}">Home</option>
+      <option value="{{ url_for('solar_calculator') }}">
+        Solar Calculator
+      </option>
+      <option value="{{ url_for('view_cars') }}">View Cars</option>
+      <option value="{{ url_for('view_json') }}">Electric Car Specs</option>
+    </select>
 
-    <span style="padding: 10px"></span>
-    <button type="button" id="view">
-      <a href="{{ url_for('view_cars') }}">View Cars</a>
-    </button>
-
-    <span style="padding: 10px"></span>
-    <button type="button" id="compare">
-      <a href="{{ url_for('compare_cars') }}">Compare Cars</a>
-    </button>
     <hr />
     <form method="POST">
       <label for="selected_object">Select JSON Object:</label>
-      <select name="selected_object" id="selected_object">
+      <select id="selected_object" name="selected_object">
         {% for index, car in enumerate(data) %}
         <option value="{{ index }}">
           {{ car["make"] }} {{ car["model"] }}
@@ -43,16 +43,16 @@
     <table>
       <thead>
         <tr>
-          {% if data %} {% for key in data[0].keys() %}
-          <th>{{ key }}</th>
-          {% endfor %} {% endif %}
+          {% for header in headers %}
+          <th>{{ header }}</th>
+          {% endfor %}
         </tr>
       </thead>
       <tbody>
-        {% for object in selected_data %}
+        {% for car in selected_data %}
         <tr>
-          {% for value in object.values() %}
-          <td>{{ value }}</td>
+          {% for header in headers %}
+          <td>{{ car[header] }}</td>
           {% endfor %}
         </tr>
         {% endfor %}

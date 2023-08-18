@@ -5,6 +5,7 @@ from typing import List
 from dataclasses import dataclass
 from database import save_car, get_cars
 import json
+from buy_lease import calculate_leasing_cost, calculate_buying_cost
 
 
 app = Flask(__name__)
@@ -214,18 +215,43 @@ def get_json_data():
     return data
 
 
+# Load the JSON data
+with open("ev_spread_2023.json", "r") as file:
+    ev_spread_2023_content = json.load(file)
+
+# Extract the headers
+headers = list(ev_spread_2023_content[0].keys())
+
+
 @app.route("/view_json", methods=["GET", "POST"])
 def view_json():
     if request.method == "POST":
         selected_object_index = int(request.form["selected_object"])
         data = get_json_data()
         selected_data = data[selected_object_index]
+
+        # Initialize selected_objects in session if not present
         if "selected_objects" not in session:
             session["selected_objects"] = []
+
+        # Append the new selected data
         session["selected_objects"].append(selected_data)
+
     all_data = get_json_data()
     selected_data = session.get("selected_objects", [])
-    return render_template("view_json.html", data=all_data, selected_data=selected_data)
+    return render_template(
+        "view_json.html", data=all_data, selected_data=selected_data, headers=headers
+    )
+
+
+def standardize_car_data(car, reference_car=None):
+    if reference_car:
+        # Use the order of attributes in the reference car
+        keys = list(reference_car.keys())
+    else:
+        # If no reference car is provided, use the car's own order of attributes
+        keys = list(car.keys())
+    return {key: car.get(key, "") for key in keys}
 
 
 @app.route("/clear_json", methods=["GET", "POST"])
@@ -250,6 +276,68 @@ def solar_calculator():
         result = f"You will need approximately {required_panels:.2f} solar panels to achieve a range of {desired_range} miles per hour."
 
     return render_template("solar_calculator.html", result=result)
+
+
+@app.route("/buy_vs_lease", methods=["GET", "POST"])
+def buy_vs_lease():
+    leasing_results = None
+    buying_results = None
+
+    if request.method == "POST":
+        # Retrieve leasing inputs
+        car_price = float(request.form["car_price"])
+        estimated_value = float(request.form["estimated_value"])
+        lease_term = int(request.form["lease_term"])
+        interest_rate = float(request.form["interest_rate"])
+        mileage_cap = int(request.form["mileage_cap"])
+        expected_depreciation = float(request.form["expected_depreciation"])
+        equity_of_trade_in = float(request.form["equity_of_trade_in"])
+        down_payment_leasing = float(request.form["down_payment_leasing"])
+        fees = float(request.form["fees"])
+
+        # Retrieve buying inputs
+        interest_rate_buying = float(request.form["interest_rate_buying"])
+        loan_term = int(request.form["loan_term"])
+        car_price_buying = float(request.form["car_price_buying"])
+        credit_score = int(request.form["credit_score"])
+        sales_tax_rate = float(request.form["sales_tax_rate"])
+        apr = float(request.form["apr"])
+        down_payment_buying = float(request.form["down_payment_buying"])
+
+        # Call functions from buy_lease.py
+        # Assuming some default values for the missing parameters for the functions
+        # You might need to adjust these or add them as inputs in your form
+        leasing_results = calculate_leasing_cost(
+            car_price,
+            estimated_value,
+            lease_term,
+            interest_rate,
+            mileage_cap,
+            estimated_value,
+            equity_of_trade_in,
+            down_payment_leasing,
+            fees,
+            300,
+            "rule_of_thumb",
+        )
+
+        buying_results = calculate_buying_cost(
+            interest_rate_buying,
+            loan_term,
+            car_price_buying,
+            credit_score,
+            sales_tax_rate,
+            apr,
+            down_payment_buying,
+            1000,
+            "rule_of_thumb",
+        )
+
+    return render_template(
+        "buy_vs_lease.html",
+        leasing_results=leasing_results,
+        buying_results=buying_results,
+    )
 
 
 if __name__ == "__main__":
